@@ -26,9 +26,9 @@ def brute_force_password_cracker(hashed_target_password : string) -> Tuple[str, 
 
     end_time = time.time()
     elapsed_time_seconds = end_time - start_time
+    time_total, unit = seconds_to_time_unit(elapsed_time_seconds)
 
-    
-    return None, elapsed_time_seconds
+    return None, time_total, unit
 
 
 

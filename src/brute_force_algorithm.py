@@ -1,12 +1,14 @@
 from utils import hash_password,estimate_crack_time,possible_combinations
 import string
 import time
-from typing import Generator, Iterable, List, Optional, Tuple, Union
+from typing import Tuple
+from utils import CHARACTERS
+from utils import seconds_to_time_unit
 
-def brute_force_password_cracker(hashed_target_password : string) -> Tuple[str, float]:
+def brute_force_password_cracker(hashed_target_password : string) -> Tuple[str, float, str]:
     
     # All possible characters
-    characters = string.ascii_letters + string.digits + string.punctuation
+    characters = CHARACTERS
     
     start_time = time.time()
     
@@ -16,10 +18,10 @@ def brute_force_password_cracker(hashed_target_password : string) -> Tuple[str, 
             password = ''.join(password_tuple)
             hashed_password = hash_password(password)
             if hashed_password == hashed_target_password:
-                print(f"Password cracked: {password}")
                 end_time = time.time()
                 elapsed_time_seconds = end_time - start_time
-                return password,elapsed_time_seconds
+                time_total, unit = seconds_to_time_unit(elapsed_time_seconds)
+                return password,time_total, unit
                 
 
     end_time = time.time()
@@ -29,8 +31,4 @@ def brute_force_password_cracker(hashed_target_password : string) -> Tuple[str, 
     return None, elapsed_time_seconds
 
 
-# brute_force_password_cracker("asdasdgfsdfasdasd")
-password, time_taken = brute_force_password_cracker(hash_password("abc"))
-print("Password : " + str(password))
-print("Time taken : " + str(time_taken ) + " seconds")
 

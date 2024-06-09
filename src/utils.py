@@ -1,5 +1,9 @@
 import hashlib
 import time
+from typing import Tuple
+import string
+
+CHARACTERS = string.ascii_letters + string.digits + string.punctuation
 
 def possible_combinations(characters, repeat):
     pools = [list(characters)] * repeat
@@ -15,6 +19,27 @@ def hash_password(password):
 def load_passwords(file_path):
     with open(file_path, 'r') as file:
         return [line.strip() for line in file]
+
+
+def seconds_to_time_unit(total_time_seconds : float) -> Tuple[float, str]:
+    time_end = 0
+    unit = ""
+    if total_time_seconds >= 24 * 3600:
+        time_end = total_time_seconds / (24 * 3600)
+        unit = "days"
+    elif total_time_seconds >= 3600:
+        time_end = total_time_seconds / 3600
+        unit = "hours"
+    elif total_time_seconds >= 60:
+        time_end = total_time_seconds / 60
+        unit = "minutes"
+    else:
+        time_end = total_time_seconds
+        unit = "seconds"
+    return time_end,unit
+
+def estimate_crack_time_string(password: str) -> None:
+    estimate_crack_time(CHARACTERS, len(password))
     
 def estimate_crack_time(character_set: str, max_length: int) -> None:
     total_attempts = 0
@@ -42,20 +67,7 @@ def estimate_crack_time(character_set: str, max_length: int) -> None:
     total_time_seconds = total_attempts / attempts_per_second
     
     # Display time according total_time_seconds
-    time_end = 0
-    unit = ""
-    if total_time_seconds >= 24 * 3600:
-        time_end = total_time_seconds / (24 * 3600)
-        unit = "days"
-    elif total_time_seconds >= 3600:
-        time_end = total_time_seconds / 3600
-        unit = "hours"
-    elif total_time_seconds >= 60:
-        time_end = total_time_seconds / 60
-        unit = "minutes"
-    else:
-        time_end = total_time_seconds
-        unit = "seconds"
+    time_end, unit = seconds_to_time_unit(total_time_seconds)
     
 
     print(f"Estimated time to crack (worst case): {time_end:.2f} {unit}")

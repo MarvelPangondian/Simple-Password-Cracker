@@ -4,6 +4,18 @@ from typing import Tuple
 import string
 
 CHARACTERS = string.ascii_letters + string.digits + string.punctuation
+PASSWORD_DICTIONARY = []
+HAS_INITIALIZED = False
+
+def initialize():
+    global HAS_INITIALIZED
+    global PASSWORD_DICTIONARY
+
+    HAS_INITIALIZED = True
+    
+    with open("src/database/dictionary.txt", 'r') as file:
+        PASSWORD_DICTIONARY = [line.strip() for line in file]
+
 
 def possible_combinations(characters, repeat):
     pools = [list(characters)] * repeat
@@ -16,9 +28,14 @@ def possible_combinations(characters, repeat):
 def hash_password(password):
     return hashlib.sha256(password.encode()).hexdigest()
 
-def load_passwords(file_path):
-    with open(file_path, 'r') as file:
-        return [line.strip() for line in file]
+def load_passwords():
+    global HAS_INITIALIZED
+    global PASSWORD_DICTIONARY
+    
+    if (not HAS_INITIALIZED):
+        initialize()
+        
+    return PASSWORD_DICTIONARY
 
 
 def seconds_to_time_unit(total_time_seconds : float) -> Tuple[float, str]:
@@ -72,3 +89,17 @@ def estimate_crack_time(character_set: str, max_length: int) -> None:
 
     print(f"Estimated time to crack (if using brute force): {time_end:.2f} {unit}")
     
+
+def time_addition(time1: float, unit1: str, time2: float, unit2: str) -> Tuple[float,str]:
+    units = {
+        "days": 86400,
+        "hours": 3600,
+        "minutes": 60,
+        "seconds": 1
+    }
+    
+    if unit1 not in units or unit2 not in units:
+        raise ValueError("Invalid unit provided")
+    
+    total_seconds = time1 * units[unit1] + time2 * units[unit2]
+    return seconds_to_time_unit(total_seconds)

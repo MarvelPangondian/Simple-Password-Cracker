@@ -1,7 +1,7 @@
 import re
 from typing import Tuple
 import time
-from utils import load_passwords, hash_password, seconds_to_time_unit
+from utils import load_passwords, hash_password, seconds_to_time_unit,time_addition
 from greedy_algorithm import heuristic
 from brute_force_algorithm import brute_force_password_cracker
 
@@ -69,9 +69,11 @@ def hybrid_password_cracker(hashed_target_password: str, dictionary_file: str) -
 
     end_time = time.time()
     elapsed_time_seconds = end_time - start_time
-    time_total, unit = seconds_to_time_unit(elapsed_time_seconds)
-    print("Password not found in dictionary. Falling back to brute force")
 
-    return brute_force_password_cracker(hashed_target_password)
+    print("Password not found in dictionary. Falling back to brute force")
+    password2,time_total_2, unit_2 = brute_force_password_cracker(hashed_target_password)
+    
+    final_time, final_unit = time_addition(elapsed_time_seconds, "seconds",time_total_2, unit_2)
+    return password2, final_time, final_unit
 
 

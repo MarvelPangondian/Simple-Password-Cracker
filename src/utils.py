@@ -70,5 +70,5 @@ def estimate_crack_time(character_set: str, max_length: int) -> None:
     time_end, unit = seconds_to_time_unit(total_time_seconds)
     
 
-    print(f"Estimated time to crack (worst case): {time_end:.2f} {unit}")
+    print(f"Estimated time to crack (if using brute force): {time_end:.2f} {unit}")
     

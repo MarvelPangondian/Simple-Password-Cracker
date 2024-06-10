@@ -1,9 +1,8 @@
-from utils import hash_password,estimate_crack_time,possible_combinations
+from utils import hash_password,possible_combinations,seconds_to_time_unit,CHARACTERS
 import string
 import time
 from typing import Tuple
-from utils import CHARACTERS
-from utils import seconds_to_time_unit
+
 
 def brute_force_password_cracker(hashed_target_password : string) -> Tuple[str, float, str]:
     

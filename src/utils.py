@@ -2,10 +2,22 @@ import hashlib
 import time
 from typing import Tuple
 import string
+import os
 
 CHARACTERS = string.ascii_letters + string.digits + string.punctuation
 PASSWORD_DICTIONARY = []
 HAS_INITIALIZED = False
+
+def read_all_txt_files_in_directory(directory_path, encoding='utf-8'):
+    combined_lines = []
+    for filename in os.listdir(directory_path):
+        file_path = os.path.join(directory_path, filename)
+        if os.path.isfile(file_path) and file_path.endswith('.txt'):
+            with open(file_path, 'r', encoding=encoding,errors="ignore") as file:
+                lines = file.readlines()
+                combined_lines.extend(line.strip() for line in lines if line.strip())
+                
+    return combined_lines
 
 def initialize():
     global HAS_INITIALIZED
@@ -13,8 +25,8 @@ def initialize():
 
     HAS_INITIALIZED = True
     
-    with open("src/database/dictionary.txt", 'r') as file:
-        PASSWORD_DICTIONARY = [line.strip() for line in file]
+    PASSWORD_DICTIONARY = read_all_txt_files_in_directory("src/database")
+    print(len(PASSWORD_DICTIONARY))
 
 
 def possible_combinations(characters, repeat):

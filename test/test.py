@@ -12,7 +12,7 @@ import math
 
 def test_greedy():
 
-    password_target = "p@ssword"
+    password_target = "@ssword"
     password_target_hash = hash_password(password_target)
     estimate_crack_time_string(password_target)
     
@@ -30,7 +30,7 @@ def test_hybrid():
     estimate_crack_time_string(password_target)
     
     print("searching..")
-    password, time, unit = hybrid_password_cracker(password_target_hash,"src/database/dictionary.txt")
+    password, time, unit = hybrid_password_cracker(password_target_hash)
     if (password != None):
         print(f"Password : {password}")
         print(f"Time taken : {time:.2f} {unit}")
@@ -39,5 +39,13 @@ def test_hybrid():
     
 
 
+# initialize()
+# test_greedy()
+
+
+
+
+# Example usage
+# print(apply_transformations("password"))
 initialize()
-test_greedy()
+test_hybrid()

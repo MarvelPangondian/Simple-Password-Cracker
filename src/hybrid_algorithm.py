@@ -1,9 +1,9 @@
 import re
 from typing import Tuple
 import time
-from utils import load_passwords, hash_password, seconds_to_time_unit,time_addition
+from utils import load_passwords, hash_password, seconds_to_time_unit,time_addition, CHARACTERS
 from greedy_algorithm import heuristic
-from brute_force_algorithm import brute_force_password_cracker
+from brute_force_algorithm import possible_combinations
 
 
 def apply_transformations(word):
@@ -27,12 +27,12 @@ def apply_transformations(word):
     return list(transformations)
 
 
-def hybrid_password_cracker(hashed_target_password: str, dictionary_file: str) -> Tuple[str, float, str]:
+def hybrid_password_cracker(hashed_target_password: str) -> Tuple[str, float, str]:
     # Load dictionary
     start_time = time.time()
     
     all_encountered_password = set()
-    passwords = load_passwords(dictionary_file)
+    passwords = load_passwords()
     
     scored_passwords = [(password, heuristic(password)) for password in passwords]
     scored_passwords.sort(key=lambda x: x[1], reverse=True)
@@ -66,14 +66,27 @@ def hybrid_password_cracker(hashed_target_password: str, dictionary_file: str) -
                 elapsed_time_seconds = end_time - start_time
                 time_total, unit = seconds_to_time_unit(elapsed_time_seconds)
                 return password, time_total, unit
-
+            
+    print("Password not found in dictionary. Falling back to brute force")
+    
+    for length in range(1, 6):
+        for password_tuple in possible_combinations(CHARACTERS, length):
+            password = ''.join(password_tuple)
+            if password not in all_encountered_password:
+                all_encountered_password.add(password)
+            else:
+                continue
+            hashed_password = hash_password(password)
+            if hashed_password == hashed_target_password:
+                end_time = time.time()
+                elapsed_time_seconds = end_time - start_time
+                time_total, unit = seconds_to_time_unit(elapsed_time_seconds)
+                return password,time_total, unit
+            
     end_time = time.time()
     elapsed_time_seconds = end_time - start_time
-
-    print("Password not found in dictionary. Falling back to brute force")
-    password2,time_total_2, unit_2 = brute_force_password_cracker(hashed_target_password)
+    final_time, final_unit = seconds_to_time_unit(elapsed_time_seconds)
     
-    final_time, final_unit = time_addition(elapsed_time_seconds, "seconds",time_total_2, unit_2)
-    return password2, final_time, final_unit
+    return None, final_time, final_unit
 
 

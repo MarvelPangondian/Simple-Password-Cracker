@@ -30,7 +30,6 @@ def find_password(choice: int):
     return cracked_password, time_cracked, unit_time
 
 def main_menu():
-    print("Loading... this may take a while..")
     initialize()
     tprint("Password Cracker")
     user_input = 0
@@ -50,9 +49,9 @@ def main_menu():
             if 1 <= user_input <= 5:
                 cracked_password, time_cracked, unit_time = find_password(user_input)
                 if cracked_password:
-                    print()
                     print("Cracked password: " + cracked_password)
                     print(f"Time taken: {time_cracked:.2f} {unit_time}")
+                    print()
                 else:
                     print("Unable to crack password...")
             elif user_input != 6:

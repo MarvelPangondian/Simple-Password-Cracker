@@ -29,10 +29,9 @@ def apply_transformations(word):
 
 
 def hybrid_password_cracker(hashed_target_password: str) -> Tuple[str, float, str]:
-    # Load dictionary
-    print("Searching using hybrid algorithm..")
+
+    print("Searching using hybrid algorithm..")    
     start_time = time.time()
-    
     all_encountered_password = set()
     scored_passwords = load_heuristic_password()
     

@@ -3,17 +3,15 @@ from typing import Tuple
 import time
 
 def heuristic_password_cracker(hashed_target_password: str) -> Tuple[str, float, str]:
-    print("Searching using heuristic algorithm")
+
+    print("Searching using heuristic algorithm..")
     start_time = time.time()
     scored_passwords = load_heuristic_password()
     # Sort passwords based on their heuristic score
     # Common passwords have scores close to 0
-    scored_passwords.sort(key=lambda x: x[1], reverse=False)
+
     for password, _ in scored_passwords:
         hashed_password = hash_password(password)
-
-        # Greedy by comparing target password with current strongest password first
-        # If not a match, then try comparing the next strongest password
         if hashed_password == hashed_target_password:
             end_time = time.time()
             elapsed_time_seconds = end_time - start_time

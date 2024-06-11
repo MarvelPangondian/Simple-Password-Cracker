@@ -3,14 +3,14 @@ from typing import Tuple
 import time
 
 def greedy_password_cracker(hashed_target_password: str) -> Tuple[str, float, str]:
-    
+
     print("Searching using greedy algorithm..")
     start_time = time.time()
     scored_passwords = load_greedy_password()
 
     # Sort passwords based on their heuristic score
     # Strong passwords have high score, weak passwords have low scores
-    scored_passwords.sort(key=lambda x: x[1], reverse=True)
+
     for password, _ in scored_passwords:
         hashed_password = hash_password(password)
 

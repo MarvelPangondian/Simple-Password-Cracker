@@ -48,7 +48,7 @@ def entropy(password: str) -> float:
 
 def heuristic(password: str) -> float:
     score = 0
-    median = 41.35
+    median = 41.36
     score = entropy(password)
     return abs(score - median)
 
@@ -62,14 +62,7 @@ def initialize():
     global ATTEMPTS_PER_SECOND
     HAS_INITIALIZED = True
     
-    PASSWORD_DICTIONARY = read_all_txt_files_in_directory("src/database")
-    PASSWORD_HEURISTIC = [(password, heuristic(password)) for password in PASSWORD_DICTIONARY]
-    PASSWORD_GREEDY = [(password, entropy(password)) for password in PASSWORD_DICTIONARY]
-
-    PASSWORD_HEURISTIC.sort(key=lambda x: x[1], reverse=False)
-    PASSWORD_GREEDY.sort(key=lambda x: x[1], reverse=True)
-    
-        # Calculate possible attempts per second
+    #Calculate possible attempts per second
     attempts = 0
     start_time = time.time()
     for length in range(1, 3 + 1):
@@ -79,9 +72,19 @@ def initialize():
             hashed_password = hash_password(password)
             if hashed_password == "ABCDEFGHIJ":
                 # simulate trying to break password
-                continue
+                pass
     end_time = time.time()
     ATTEMPTS_PER_SECOND = round(attempts / (end_time - start_time))
+    print("Attempts per second according to hardware: " + str(ATTEMPTS_PER_SECOND))
+    print("Loading... this may take a while..")
+    
+    PASSWORD_DICTIONARY = read_all_txt_files_in_directory("src/database")
+    PASSWORD_HEURISTIC = [(password, heuristic(password)) for password in PASSWORD_DICTIONARY]
+    PASSWORD_GREEDY = [(password, entropy(password)) for password in PASSWORD_DICTIONARY]
+
+    PASSWORD_HEURISTIC.sort(key=lambda x: x[1], reverse=False)
+    PASSWORD_GREEDY.sort(key=lambda x: x[1], reverse=True)
+
 
 def load_passwords():
     global HAS_INITIALIZED
@@ -111,8 +114,8 @@ def load_greedy_password():
     return PASSWORD_GREEDY
 
 
-def possible_combinations(characters, repeat):
-    pools = [list(characters)] * repeat
+def possible_combinations(characters, max_length):
+    pools = [list(characters)] * max_length
     result = [[]]
     for pool in pools:
         result = [x + [y] for x in result for y in pool]
@@ -158,7 +161,7 @@ def estimate_crack_time(character_set: str, max_length: int) -> None:
     
 
     print(f"Estimated time to crack (if using brute force): {time_end:.2f} {unit}")
-    
+    return time_end, unit
 
 def time_addition(time1: float, unit1: str, time2: float, unit2: str) -> Tuple[float,str]:
     units = {

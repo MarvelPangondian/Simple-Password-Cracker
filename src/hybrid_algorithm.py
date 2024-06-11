@@ -1,8 +1,8 @@
 import re
 from typing import Tuple
 import time
-from utils import load_passwords, hash_password, seconds_to_time_unit,time_addition, CHARACTERS
-from greedy_algorithm import heuristic
+from utils import load_heuristic_password, hash_password, seconds_to_time_unit, CHARACTERS
+
 from brute_force_algorithm import possible_combinations
 
 
@@ -29,13 +29,11 @@ def apply_transformations(word):
 
 def hybrid_password_cracker(hashed_target_password: str) -> Tuple[str, float, str]:
     # Load dictionary
+    print("Searching using hybrid algorithm..")
     start_time = time.time()
     
     all_encountered_password = set()
-    passwords = load_passwords()
-    
-    scored_passwords = [(password, heuristic(password)) for password in passwords]
-    scored_passwords.sort(key=lambda x: x[1], reverse=True)
+    scored_passwords = load_heuristic_password()
     
     for password_not_altered, _ in scored_passwords:
 

@@ -3,9 +3,13 @@ import time
 from typing import Tuple
 import string
 import os
+import re
+import math
 
 CHARACTERS = string.ascii_letters + string.digits + string.punctuation
 PASSWORD_DICTIONARY = []
+PASSWORD_GREEDY = []
+PASSWORD_HEURISTIC = []
 HAS_INITIALIZED = False
 
 def read_all_txt_files_in_directory(directory_path, encoding='utf-8'):
@@ -19,14 +23,76 @@ def read_all_txt_files_in_directory(directory_path, encoding='utf-8'):
                 
     return combined_lines
 
+
+def entropy(password: str) -> float:
+    score = 0
+
+    # Entropy calculation
+    charset_size = 0
+    if re.search(r"[A-Z]", password):
+        charset_size += 26  # Uppercase letters
+    if re.search(r"[a-z]", password):
+        charset_size += 26  # Lowercase letters
+    if re.search(r"\d", password):
+        charset_size += 10  # Digits
+    if re.search(r"[!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~]", password):
+        charset_size += len("!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~")  # Special characters
+
+    if charset_size > 0:
+        entropy = len(password) * math.log2(charset_size)
+        score += entropy
+
+    return round(score, 4)
+
+
+def heuristic(password: str) -> float:
+    score = 0
+    median = 41.35
+    score = entropy(password)
+    return abs(score - median)
+
+
 def initialize():
+    # preprocessing
     global HAS_INITIALIZED
     global PASSWORD_DICTIONARY
-
+    global PASSWORD_HEURISTIC
+    global PASSWORD_GREEDY
     HAS_INITIALIZED = True
     
     PASSWORD_DICTIONARY = read_all_txt_files_in_directory("src/database")
-    print(len(PASSWORD_DICTIONARY))
+    PASSWORD_HEURISTIC = [(password, heuristic(password)) for password in PASSWORD_DICTIONARY]
+    PASSWORD_GREEDY = [(password, entropy(password)) for password in PASSWORD_DICTIONARY]
+
+    PASSWORD_HEURISTIC.sort(key=lambda x: x[1], reverse=False)
+    PASSWORD_GREEDY.sort(key=lambda x: x[1], reverse=True)
+
+def load_passwords():
+    global HAS_INITIALIZED
+    global PASSWORD_DICTIONARY
+    
+    if (not HAS_INITIALIZED):
+        initialize()
+        
+    return PASSWORD_DICTIONARY
+
+def load_heuristic_password():
+    global HAS_INITIALIZED
+    global PASSWORD_HEURISTIC
+    
+    if (not HAS_INITIALIZED):
+        initialize()
+        
+    return PASSWORD_HEURISTIC
+
+def load_greedy_password():
+    global HAS_INITIALIZED
+    global PASSWORD_GREEDY
+    
+    if (not HAS_INITIALIZED):
+        initialize()
+        
+    return PASSWORD_GREEDY
 
 
 def possible_combinations(characters, repeat):
@@ -40,14 +106,6 @@ def possible_combinations(characters, repeat):
 def hash_password(password):
     return hashlib.sha256(password.encode()).hexdigest()
 
-def load_passwords():
-    global HAS_INITIALIZED
-    global PASSWORD_DICTIONARY
-    
-    if (not HAS_INITIALIZED):
-        initialize()
-        
-    return PASSWORD_DICTIONARY
 
 
 def seconds_to_time_unit(total_time_seconds : float) -> Tuple[float, str]:
@@ -77,7 +135,7 @@ def estimate_crack_time(character_set: str, max_length: int) -> None:
     # Calculate possible attempts per second
     attempts = 0
     start_time = time.time()
-    for length in range(1, 3 + 1):
+    for length in range(1, 2 + 1):
         for password_tuple in possible_combinations(character_set, length):
             attempts += 1
             password = ''.join(password_tuple)

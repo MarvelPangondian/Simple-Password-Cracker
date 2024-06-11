@@ -7,6 +7,7 @@ from typing import Tuple
 def brute_force_password_cracker(hashed_target_password : string) -> Tuple[str, float, str]:
     
     # All possible characters
+    print("Seraching using brute force algorithm ")
     characters = CHARACTERS
     
     start_time = time.time()

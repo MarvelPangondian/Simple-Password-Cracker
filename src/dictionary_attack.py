@@ -3,12 +3,6 @@ from typing import Tuple
 from utils import seconds_to_time_unit
 import time
 
-
-
-
-
-
-
 def dictionary_attack_password_cracker(hashed_target_password: str) -> Tuple[str, float, str]:
     start_time = time.time()
     passwords = load_passwords()

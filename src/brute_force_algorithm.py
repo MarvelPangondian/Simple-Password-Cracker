@@ -3,7 +3,6 @@ import string
 import time
 from typing import Tuple
 
-
 def brute_force_password_cracker(hashed_target_password : string) -> Tuple[str, float, str]:
     
     # All possible characters

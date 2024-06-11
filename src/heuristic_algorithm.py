@@ -1,9 +1,6 @@
-from utils import hash_password, load_passwords
-import re
+from utils import hash_password,seconds_to_time_unit,load_heuristic_password
 from typing import Tuple
-from utils import seconds_to_time_unit,load_heuristic_password
 import time
-import math
 
 def heuristic_password_cracker(hashed_target_password: str) -> Tuple[str, float, str]:
     print("Searching using heuristic algorithm")

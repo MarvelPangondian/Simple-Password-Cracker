@@ -1,13 +1,6 @@
-from utils import hash_password, load_greedy_password
-import re
+from utils import hash_password, load_greedy_password,seconds_to_time_unit
 from typing import Tuple
-from utils import seconds_to_time_unit,entropy
 import time
-import math
-
-
-# TODO : make and test greedy based password cracker algorithm
-
 
 def greedy_password_cracker(hashed_target_password: str) -> Tuple[str, float, str]:
     

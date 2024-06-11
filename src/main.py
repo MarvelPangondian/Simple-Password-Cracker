@@ -17,11 +17,11 @@ def find_password(choice: int):
     estimate_crack_time_string(password)
     
     if choice == 1:
-        cracked_password, time_cracked, unit_time = brute_force_password_cracker(hash_password_target)
-    elif choice == 2:
-        cracked_password, time_cracked, unit_time = greedy_password_cracker(hash_password_target)
-    elif choice == 3:
         cracked_password, time_cracked, unit_time = dictionary_attack_password_cracker(hash_password_target)
+    elif choice == 2:
+        cracked_password, time_cracked, unit_time = brute_force_password_cracker(hash_password_target)
+    elif choice == 3:
+        cracked_password, time_cracked, unit_time = greedy_password_cracker(hash_password_target)
     elif choice == 4:
         cracked_password, time_cracked, unit_time = heuristic_password_cracker(hash_password_target)
     elif choice == 5:
@@ -38,9 +38,9 @@ def main_menu():
     while user_input != 6:
         print(" main menu ".center(50, "="))
         print("Pick method to use!")
-        print("1. Brute Force")
-        print("2. Greedy")
-        print("3. Pure Dictionary Attack")
+        print("1. Pure Dictionary Attack")
+        print("2. Brute Force")
+        print("3. Greedy")
         print("4. Heuristic")
         print("5. Hybrid")
         print("6. End program")

@@ -11,6 +11,7 @@ PASSWORD_DICTIONARY = []
 PASSWORD_GREEDY = []
 PASSWORD_HEURISTIC = []
 HAS_INITIALIZED = False
+ATTEMPTS_PER_SECOND = 0.0
 
 def read_all_txt_files_in_directory(directory_path, encoding='utf-8'):
     combined_lines = []
@@ -58,6 +59,7 @@ def initialize():
     global PASSWORD_DICTIONARY
     global PASSWORD_HEURISTIC
     global PASSWORD_GREEDY
+    global ATTEMPTS_PER_SECOND
     HAS_INITIALIZED = True
     
     PASSWORD_DICTIONARY = read_all_txt_files_in_directory("src/database")
@@ -66,6 +68,20 @@ def initialize():
 
     PASSWORD_HEURISTIC.sort(key=lambda x: x[1], reverse=False)
     PASSWORD_GREEDY.sort(key=lambda x: x[1], reverse=True)
+    
+        # Calculate possible attempts per second
+    attempts = 0
+    start_time = time.time()
+    for length in range(1, 3 + 1):
+        for password_tuple in possible_combinations(CHARACTERS, length):
+            attempts += 1
+            password = ''.join(password_tuple)
+            hashed_password = hash_password(password)
+            if hashed_password == "ABCDEFGHIJ":
+                # simulate trying to break password
+                continue
+    end_time = time.time()
+    ATTEMPTS_PER_SECOND = round(attempts / (end_time - start_time))
 
 def load_passwords():
     global HAS_INITIALIZED
@@ -106,8 +122,6 @@ def possible_combinations(characters, repeat):
 def hash_password(password):
     return hashlib.sha256(password.encode()).hexdigest()
 
-
-
 def seconds_to_time_unit(total_time_seconds : float) -> Tuple[float, str]:
     time_end = 0
     unit = ""
@@ -131,27 +145,13 @@ def estimate_crack_time_string(password: str) -> None:
 def estimate_crack_time(character_set: str, max_length: int) -> None:
     total_attempts = 0
     character_set_size = len(character_set)
-    
-    # Calculate possible attempts per second
-    attempts = 0
-    start_time = time.time()
-    for length in range(1, 2 + 1):
-        for password_tuple in possible_combinations(character_set, length):
-            attempts += 1
-            password = ''.join(password_tuple)
-            hashed_password = hash_password(password)
-            if hashed_password == "ABCDEFGHIJ":
-                # simulate trying to break password
-                continue
-    end_time = time.time()
-    attempts_per_second = round(attempts / (end_time - start_time))
-    
+        
     # Calculate total number of attempts
     for length in range(1, max_length + 1):
         total_attempts += character_set_size ** length
     
     # Calculate time in seconds
-    total_time_seconds = total_attempts / attempts_per_second
+    total_time_seconds = total_attempts / ATTEMPTS_PER_SECOND
     
     # Display time according total_time_seconds
     time_end, unit = seconds_to_time_unit(total_time_seconds)

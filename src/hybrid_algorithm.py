@@ -1,7 +1,8 @@
-import re
-from typing import Tuple
-import time
 from utils import load_heuristic_password, hash_password, seconds_to_time_unit, CHARACTERS
+from typing import Tuple
+import re
+import time
+
 
 from brute_force_algorithm import possible_combinations
 

@@ -1,6 +1,6 @@
 from sympy import *
 from art import *
-from utils import hash_password, estimate_crack_time_string, initialize
+from utils import hash_password, estimate_crack_time_string, initialize,seconds_to_time_unit
 from brute_force_algorithm import brute_force_password_cracker
 from greedy_algorithm import greedy_password_cracker
 from dictionary_attack import dictionary_attack_password_cracker
@@ -17,16 +17,18 @@ def find_password(choice: int):
     estimate_crack_time_string(password)
     
     if choice == 1:
-        cracked_password, time_cracked, unit_time = dictionary_attack_password_cracker(hash_password_target)
+        cracked_password, time_cracked = dictionary_attack_password_cracker(hash_password_target)
     elif choice == 2:
-        cracked_password, time_cracked, unit_time = brute_force_password_cracker(hash_password_target)
+        cracked_password, time_cracked = brute_force_password_cracker(hash_password_target)
     elif choice == 3:
-        cracked_password, time_cracked, unit_time = greedy_password_cracker(hash_password_target)
+        cracked_password, time_cracked = greedy_password_cracker(hash_password_target)
     elif choice == 4:
-        cracked_password, time_cracked, unit_time = heuristic_password_cracker(hash_password_target)
+        cracked_password, time_cracked  = heuristic_password_cracker(hash_password_target)
     elif choice == 5:
-        cracked_password, time_cracked, unit_time = hybrid_password_cracker(hash_password_target)
-
+        cracked_password, time_cracked = hybrid_password_cracker(hash_password_target)
+    
+    time_cracked, unit_time = seconds_to_time_unit(time_cracked)
+    
     return cracked_password, time_cracked, unit_time
 
 def main_menu():

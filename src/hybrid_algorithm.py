@@ -7,7 +7,12 @@ import time
 from brute_force_algorithm import possible_combinations
 
 
+transformation_cache = {}
 def apply_transformations(word):
+    global transformation_cache
+    # Check if the transformations for the word are already cached
+    if word in transformation_cache:
+        return transformation_cache[word]
 
     transformations = set()
 
@@ -25,10 +30,17 @@ def apply_transformations(word):
         transformed_word = re.sub(pattern, replacement, word)
         transformations.add(transformed_word)
 
-    return list(transformations)
+    # Convert set to list
+    transformations_list = list(transformations)
+
+    # Cache the result
+    transformation_cache[word] = transformations_list
+
+    return transformations_list
 
 
-def hybrid_password_cracker(hashed_target_password: str) -> Tuple[str, float, str]:
+
+def hybrid_password_cracker(hashed_target_password: str) -> Tuple[str, float]:
 
     print("Searching using hybrid algorithm..")    
     start_time = time.time()
@@ -44,8 +56,7 @@ def hybrid_password_cracker(hashed_target_password: str) -> Tuple[str, float, st
             if hashed_password == hashed_target_password:
                 end_time = time.time()
                 elapsed_time_seconds = end_time - start_time
-                time_total, unit = seconds_to_time_unit(elapsed_time_seconds)
-                return password_not_altered, time_total, unit
+                return password_not_altered,elapsed_time_seconds
         else:
             continue
         
@@ -62,8 +73,7 @@ def hybrid_password_cracker(hashed_target_password: str) -> Tuple[str, float, st
             if hashed_password == hashed_target_password:
                 end_time = time.time()
                 elapsed_time_seconds = end_time - start_time
-                time_total, unit = seconds_to_time_unit(elapsed_time_seconds)
-                return password, time_total, unit
+                return password, elapsed_time_seconds
             
     print("Password not found in dictionary. Falling back to brute force")
     
@@ -78,13 +88,11 @@ def hybrid_password_cracker(hashed_target_password: str) -> Tuple[str, float, st
             if hashed_password == hashed_target_password:
                 end_time = time.time()
                 elapsed_time_seconds = end_time - start_time
-                time_total, unit = seconds_to_time_unit(elapsed_time_seconds)
-                return password,time_total, unit
+                return password,elapsed_time_seconds
             
     end_time = time.time()
     elapsed_time_seconds = end_time - start_time
-    final_time, final_unit = seconds_to_time_unit(elapsed_time_seconds)
     
-    return None, final_time, final_unit
+    return None,elapsed_time_seconds
 
 

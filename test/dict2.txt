@@ -1,0 +1,3 @@
+time total: 106.17 seconds
+Passwords cracked: 18 out of 25
+time average: 5.90 seconds

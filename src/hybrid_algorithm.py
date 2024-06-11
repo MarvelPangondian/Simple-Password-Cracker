@@ -1,7 +1,8 @@
-from utils import load_heuristic_password, hash_password, seconds_to_time_unit, CHARACTERS
+from utils import load_heuristic_password, hash_password, CHARACTERS
 from typing import Tuple
 import re
 import time
+import itertools
 
 
 from brute_force_algorithm import possible_combinations
@@ -78,7 +79,7 @@ def hybrid_password_cracker(hashed_target_password: str) -> Tuple[str, float]:
     print("Password not found in dictionary. Falling back to brute force")
     
     for length in range(1, 6):
-        for password_tuple in possible_combinations(CHARACTERS, length):
+        for password_tuple in itertools.product(CHARACTERS, repeat=length):
             password = ''.join(password_tuple)
             if password not in all_encountered_password:
                 all_encountered_password.add(password)

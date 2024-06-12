@@ -74,15 +74,14 @@ def hybrid_password_cracker(hashed_target_password: str) -> Tuple[str, float]:
     print("Password not found in dictionary. Falling back to brute force")
     
     for length in range(1, 6 + 1):
-            for password_tuple in product(CHARACTERS, repeat=length):
-                password = ''.join(password_tuple)
-                if password not in all_encountered_passwords:
-                    all_encountered_passwords.add(password)
-                    hashed_password = hash_password(password)
-                    if hashed_password == hashed_target_password:
-                        end_time = time.time()
-                        elapsed_time_seconds = end_time - start_time
-                        return password, elapsed_time_seconds
+        for password_tuple in product(CHARACTERS, repeat=length):
+            password = ''.join(password_tuple)
+            if password not in all_encountered_passwords:
+                hashed_password = hash_password(password)
+                if hashed_password == hashed_target_password:
+                    end_time = time.time()
+                    elapsed_time_seconds = end_time - start_time
+                    return password, elapsed_time_seconds
 
             
     end_time = time.time()

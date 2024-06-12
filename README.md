@@ -22,7 +22,7 @@ This project includes implementations of various password-cracking algorithms su
 ```bash
 .
 ├─── analysis
-│   └─── data.jsonentropy_analysis
+│   └─── entropy_analysis.ipynb
 │ 
 ├─── doc
 │   ├─── 13522075-Makalah-Stima-2024.pdf

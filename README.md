@@ -48,6 +48,10 @@ This project includes implementations of various password-cracking algorithms su
 │   ├─── main.py
 │   └─── utils.py
 │
+├─── test
+│   ├─── all_test_results...
+│   └─── test.py
+│
 ├─── .gitignore
 ├─── LICENSE
 ├─── README.md

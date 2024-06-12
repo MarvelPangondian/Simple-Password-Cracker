@@ -54,8 +54,8 @@ This project includes implementations of various password-cracking algorithms su
 ├─── requirements.txt
 ├─── run.bat
 ├─── run.sh
-├─── run.runTest.bat
-└─── runTest.shj
+├─── runTest.bat
+└─── runTest.sh
 
 ```
 ## Technologies Used

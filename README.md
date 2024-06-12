@@ -104,5 +104,5 @@ chmod +x run.sh
 ![fallback](./screenshots/fallback.png)<br><br>
 
 ## Links
-- Repository: https://github.com/MarvelPangondian/Simple-User-Identification-Program
+- Repository: https://github.com/MarvelPangondian/Simple-Password-Crack
 - Video : https://youtu.be/yarhrrqpUjM

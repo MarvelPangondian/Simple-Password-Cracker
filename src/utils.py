@@ -1,6 +1,7 @@
 import hashlib
 import time
 from typing import Tuple
+import itertools
 import string
 import os
 import re
@@ -115,12 +116,13 @@ def load_greedy_password():
 
 
 def possible_combinations(characters, max_length):
-    pools = [list(characters)] * max_length
-    result = [[]]
-    for pool in pools:
-        result = [x + [y] for x in result for y in pool]
-    for prod in result:
-        yield tuple(prod)
+    if max_length == 0:
+        yield ''
+    else:
+        for char in characters:
+            for smaller_combination in possible_combinations(characters, max_length - 1):
+                yield char + smaller_combination
+
 
 def hash_password(password):
     return hashlib.sha256(password.encode()).hexdigest()

@@ -104,5 +104,5 @@ chmod +x run.sh
 ![fallback](./screenshots/fallback.png)<br><br>
 
 ## Links
-- Repository: https://github.com/MarvelPangondian/Simple-Password-Crack
+- Repository: https://github.com/MarvelPangondian/Simple-Password-Cracker
 - Video : https://youtu.be/yarhrrqpUjM

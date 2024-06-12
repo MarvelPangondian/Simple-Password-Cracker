@@ -1,7 +1,6 @@
 import hashlib
 import time
 from typing import Tuple
-import itertools
 import string
 import os
 import re
@@ -96,6 +95,7 @@ def load_passwords():
         
     return PASSWORD_DICTIONARY
 
+
 def load_heuristic_password():
     global HAS_INITIALIZED
     global PASSWORD_HEURISTIC
@@ -104,6 +104,7 @@ def load_heuristic_password():
         initialize()
         
     return PASSWORD_HEURISTIC
+
 
 def load_greedy_password():
     global HAS_INITIALIZED
@@ -127,6 +128,7 @@ def possible_combinations(characters, max_length):
 def hash_password(password):
     return hashlib.sha256(password.encode()).hexdigest()
 
+
 def seconds_to_time_unit(total_time_seconds : float) -> Tuple[float, str]:
     time_end = 0
     unit = ""
@@ -144,9 +146,11 @@ def seconds_to_time_unit(total_time_seconds : float) -> Tuple[float, str]:
         unit = "seconds"
     return time_end,unit
 
+
 def estimate_crack_time_string(password: str) -> None:
     estimate_crack_time(CHARACTERS, len(password))
-    
+
+
 def estimate_crack_time(character_set: str, max_length: int) -> None:
     total_attempts = 0
     character_set_size = len(character_set)
@@ -164,6 +168,7 @@ def estimate_crack_time(character_set: str, max_length: int) -> None:
 
     print(f"Estimated time to crack (if using brute force): {time_end:.2f} {unit}")
     return time_end, unit
+
 
 def time_addition(time1: float, unit1: str, time2: float, unit2: str) -> Tuple[float,str]:
     units = {

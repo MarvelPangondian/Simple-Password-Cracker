@@ -31,6 +31,7 @@ def find_password(choice: int):
     
     return cracked_password, time_cracked, unit_time
 
+
 def main_menu():
     initialize()
     tprint("Password Cracker")
@@ -60,6 +61,7 @@ def main_menu():
                 print("Please enter a valid choice between 1 and 6.")
         except ValueError:
             print("Invalid input. Please enter a number between 1 and 6.")
+
 
 if __name__ == "__main__":
     main_menu()

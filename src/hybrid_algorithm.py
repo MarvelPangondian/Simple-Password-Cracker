@@ -4,7 +4,6 @@ import re
 import time
 from itertools import product
 
-
 transformation_cache = {}
 def apply_transformations(word):
     global transformation_cache
@@ -35,7 +34,6 @@ def apply_transformations(word):
     transformation_cache[word] = transformations_list
 
     return transformations_list
-
 
 
 def hybrid_password_cracker(hashed_target_password: str) -> Tuple[str, float]:
